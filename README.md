@@ -6,25 +6,20 @@ gets the description for that image, resize image, write description to it
 and set it as the background in Gnome.
 
 INSTALLATION
-To make this work you will need to set a valid font path, a download folder
-which should exist and change the resolution variables to that of your screen.
-Furthermore if you want this to automatically update your desktop you should add
-this script to cron jobs, or to startup applications. Also download all needed
-python libraries.
-
-ON UBUNTU JUST RUN
+This script will work as it is if your are on Ubuntu.
+You only need to get (if you already don't have), python PIL library using this command:
 
 sudo apt-get install python-imaging
 
-then go to
+next add script to startup scripts:
 System -> Preferences -> Startup Applications
-then add script like this
-python /dir/to/script/desktop_nasa.x.x.py
 
-ALSO SET VARIABLE
-DOWNLOAD = '/home/stathis/.backgrounds/'
-to a directory that script can use
+and add script like this:
+python /dir/to/script/desktop_nasa.py
 
+I successfully use this script for a few years now, so it should work every day.
+
+CONTACT ME
 For any suggestions, improvements, bugs feel free to contact me at
 stmayridopoulos@hotmail.com
 
