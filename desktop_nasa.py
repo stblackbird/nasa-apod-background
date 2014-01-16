@@ -56,11 +56,9 @@ GET_IMAGE_ONLY = False
 # Valid values are [top, bottom, left, right]
 # text_positioning = 'top'
 NASA_POD_SITE = 'http://apod.nasa.gov/apod/'
-# IMPORTANT, SET THIS VARIABLE TO A DIR THAT EXISTS AND SCRIPT CAN WRITE
-DOWNLOAD = '/home/stathis/.backgrounds/'
-# This is default, if
+DOWNLOAD = os.getenv("HOME") + '/.backgrounds/'
+# This is default resolution, if dynamic method doesn't work
 RESOLUTION_X, RESOLUTION_Y = 1920, 1080
-
 # globals
 font = ImageFont.truetype(FONT_PATH, FONT_SIZE)
 
