@@ -2,7 +2,7 @@ desktop_nasa.py
 
 DESCRIPTION
 Gets the latest image of the day from NASA, http://apod.nasa.gov/apod/,
-gets the description for that image, resize image, write description to it
+gets the description for that image, resize image to keep original proportions, write description to it
 and set it as the background in Gnome.
 
 INSTALLATION
