@@ -45,8 +45,8 @@ import time
 FONT_PATH = '/usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-B.ttf'
 FONT_SIZE = 20
 FONT_COLOR = (255, 255, 255)
-# Select False if you don't want any description
-GET_IMAGE_ONLY = True
+# Select True if you don't want any description
+GET_IMAGE_ONLY = False
 # Future Option
 # Valid values are [top, bottom, left, right]
 # text_positioning = 'top'
@@ -57,7 +57,7 @@ RESOLUTION_X, RESOLUTION_Y = 1920, 1080
 # globals
 font = ImageFont.truetype(FONT_PATH, FONT_SIZE)
 # Crop to fit screen instead of having black borders
-CROP_TO_FIT = True
+CROP_TO_FIT = False
 
 # FUNCTIONS
 
@@ -217,8 +217,6 @@ def create_image_text(save_to, temp_image, text):
     background = Image.new('RGB', (RESOLUTION_X, RESOLUTION_Y), (0, 0, 0))
     bg_w, bg_h = background.size
     offset = ((bg_w - res_x) / 2, (bg_h - res_y) / 2)
-#    if (not CROP_TO_FIT):
-#        background.paste(image, offset)
     background.paste(image, offset)
     if text == '':
         # we just want the image
@@ -239,10 +237,6 @@ def create_image_text(save_to, temp_image, text):
                     fill=FONT_COLOR)  # text color
             j = j + 1
     fhandle = open(save_to, 'w')
-#    if (CROP_TO_FIT):
-#        image.save(fhandle, 'JPEG')
-#    else:
-#        background.save(fhandle, 'JPEG')
     background.save(fhandle, 'JPEG')
 
 def set_gnome_wallpaper(file_path):
