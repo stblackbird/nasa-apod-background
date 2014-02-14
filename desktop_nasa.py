@@ -45,7 +45,7 @@ import time
 FONT_PATH = '/usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-B.ttf'
 FONT_SIZE = 20
 FONT_COLOR = (255, 255, 255)
-# Select False if you don't want any description
+# Select True if you don't want any description
 GET_IMAGE_ONLY = False
 # Future Option
 # Valid values are [top, bottom, left, right]
@@ -56,7 +56,8 @@ DOWNLOAD = os.getenv("HOME") + '/.backgrounds/'
 RESOLUTION_X, RESOLUTION_Y = 1920, 1080
 # globals
 font = ImageFont.truetype(FONT_PATH, FONT_SIZE)
-
+# Crop to fit screen instead of having black borders
+CROP_TO_FIT = False
 
 # FUNCTIONS
 
@@ -71,7 +72,7 @@ def download_site(url):
 def get_resolution():
     ''' Get desktop resolution.
        xrandr  | grep \* | cut -d' ' -f4'''
-    command = "xrandr  | grep \* | cut -d' ' -f4"
+    command = "xrandr  | grep \* | cut -d' ' -f4 | head -1"
     status, output = commands.getstatusoutput(command)
     ret = output.split('x')
     try:
@@ -174,11 +175,44 @@ def create_image_text(save_to, temp_image, text):
     # should keep propotions of original image!
     prop_x = float(RESOLUTION_X) / img_width
     prop_y = float(RESOLUTION_Y) / img_height
-    prop = min(prop_x, prop_y)
+    if (CROP_TO_FIT):
+        prop = max(prop_x, prop_y)
+    else:
+        prop = min(prop_x, prop_y)
     # Those are the resolutions of the new image
     res_x = int(img_width * prop)
     res_y = int(img_height * prop)
     image = image.resize((res_x, res_y), Image.ANTIALIAS)
+    if (CROP_TO_FIT):
+        # Which axis is too big?
+        if (res_x == RESOLUTION_X):
+            if (RESOLUTION_Y != res_y):
+                # we need to crop y axis
+                amount_to_crop = res_y - RESOLUTION_Y
+                if amount_to_crop%2==0:
+                    amount_to_crop_top = amount_to_crop/2
+                    amount_to_crop_bottom = amount_to_crop_top
+                else:
+                    # Not sure which way the rounding goes
+                    amount_to_crop_top = amount_to_crop/2
+                    amount_to_crop_bottom = amount_to_crop - amount_to_crop_top
+                box = (0, amount_to_crop_top, RESOLUTION_X, res_y-amount_to_crop_bottom)
+                image = image.crop(box)                
+        else:
+            # we need to crop x-axis
+            if (RESOLUTION_X != res_x):
+                # we need to crop x axis
+                amount_to_crop = res_x - RESOLUTION_X
+                print(amount_to_crop)
+                if amount_to_crop%2==0:
+                    amount_to_crop_left = amount_to_crop/2
+                    amount_to_crop_right = amount_to_crop_left
+                else:
+                    # Not sure which way the rounding goes
+                    amount_to_crop_left = amount_to_crop/2
+                    amount_to_crop_right = amount_to_crop - amount_to_crop_left
+                box = (amount_to_crop_left, 0, res_x-amount_to_crop_right, RESOLUTION_Y)
+                image = image.crop(box)
     # Add a black background
     background = Image.new('RGB', (RESOLUTION_X, RESOLUTION_Y), (0, 0, 0))
     bg_w, bg_h = background.size
