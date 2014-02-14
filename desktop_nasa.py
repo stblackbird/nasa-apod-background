@@ -9,7 +9,8 @@ and set it as the background in Gnome.
 
 INSTALLATION
 This script will work as it is if your are on Ubuntu.
-You only need to get (if you already don't have), python PIL library using this command:
+You only need to get (if you already don't have), python PIL library using this
+command:
 
 sudo apt-get install python-imaging
 
@@ -19,7 +20,8 @@ System -> Preferences -> Startup Applications
 and add script like this:
 python /dir/to/script/desktop_nasa.py
 
-I successfully use this script for a few years now, so it should work every day.
+I successfully use this script for a few years now, so it should work every
+day!
 
 CONTACT ME
 For any suggestions, improvements, bugs feel free to contact me at
@@ -61,6 +63,7 @@ CROP_TO_FIT = False
 
 # FUNCTIONS
 
+
 def download_site(url):
     ''' Download contents from url and return it. '''
     opener = urllib2.build_opener()
@@ -68,6 +71,7 @@ def download_site(url):
     response = opener.open(req)
     reply = response.read()
     return reply
+
 
 def get_resolution():
     ''' Get desktop resolution.
@@ -81,7 +85,7 @@ def get_resolution():
     except:
         return ['', '']
     return ret
-    
+
 
 def get_img_title(text):
     ''' Get the image title from site contents. '''
@@ -96,7 +100,7 @@ def get_img_title(text):
     except AttributeError:
         return False
     return ret_value
-    
+
 
 def get_img_description(text):
     ''' Get the image description from site contents. '''
@@ -105,23 +109,24 @@ def get_img_description(text):
         reg = re.search(descr_regex, text, re.DOTALL)
     except sre_constants.error:
         pass
-#   Next filter links, \', newline character before returning
+    #   Next filter links, \', newline character before returning
     try:
         raw_descr = reg.group(1)
     except AttributeError:
         return ''
-# Delete Newline characters
-    ret_value = re.sub('\n',' ', raw_descr)
-# Delete all html tags
+    # Delete Newline characters
+    ret_value = re.sub('\n', ' ', raw_descr)
+    # Delete all html tags
     ret_value = re.sub('\<.*?\>', '', ret_value)
-# Ignore multiple spaces
+    # Ignore multiple spaces
     ret_value = re.sub('\s+', ' ', ret_value)
     return ret_value
 
+
 def get_image(text):
-    ''' Get image url from text and save it to an temp image file. 
+    ''' Get image url from text and save it to an temp image file.
         Return both filenames, temp and real. '''
-    reg = re.search('<a href="(image.*?)"',text, re.DOTALL)
+    reg = re.search('<a href="(image.*?)"', text, re.DOTALL)
     if 'http' in reg.group(1):
         # Contains url
         file_url = reg.group(1)
@@ -133,8 +138,9 @@ def get_image(text):
     (temp_filename, instance) = urllib.urlretrieve(file_url)
     return temp_filename, filename
 
+
 def intelli_draw(drawer, text, font, containerWidth):
-    ''' Figures out how many lines (and at which height in px) are needed to 
+    ''' Figures out how many lines (and at which height in px) are needed to
         print
         the given text with the given font on an image with the given size.
 
@@ -167,6 +173,7 @@ def intelli_draw(drawer, text, font, containerWidth):
     (width, height) = drawer.textsize(lines[0], font)
     return (lines, width, height)
 
+
 def create_image_text(save_to, temp_image, text):
     '''  '''
     image = Image.open(temp_image)
@@ -183,35 +190,36 @@ def create_image_text(save_to, temp_image, text):
     res_x = int(img_width * prop)
     res_y = int(img_height * prop)
     image = image.resize((res_x, res_y), Image.ANTIALIAS)
-    if (CROP_TO_FIT):
+    if CROP_TO_FIT:
         # Which axis is too big?
-        if (res_x == RESOLUTION_X):
-            if (RESOLUTION_Y != res_y):
+        if res_x == RESOLUTION_X:
+            if RESOLUTION_Y != res_y:
                 # we need to crop y axis
                 amount_to_crop = res_y - RESOLUTION_Y
-                if amount_to_crop%2==0:
-                    amount_to_crop_top = amount_to_crop/2
+                if amount_to_crop % 2 == 0:
+                    amount_to_crop_top = amount_to_crop / 2
                     amount_to_crop_bottom = amount_to_crop_top
                 else:
                     # Not sure which way the rounding goes
-                    amount_to_crop_top = amount_to_crop/2
+                    amount_to_crop_top = amount_to_crop / 2
                     amount_to_crop_bottom = amount_to_crop - amount_to_crop_top
-                box = (0, amount_to_crop_top, RESOLUTION_X, res_y-amount_to_crop_bottom)
-                image = image.crop(box)                
+                box = (0, amount_to_crop_top, RESOLUTION_X,
+                                                res_y - amount_to_crop_bottom)
+                image = image.crop(box)
         else:
             # we need to crop x-axis
-            if (RESOLUTION_X != res_x):
+            if RESOLUTION_X != res_x:
                 # we need to crop x axis
                 amount_to_crop = res_x - RESOLUTION_X
-                print(amount_to_crop)
-                if amount_to_crop%2==0:
-                    amount_to_crop_left = amount_to_crop/2
+                if amount_to_crop % 2 == 0:
+                    amount_to_crop_left = amount_to_crop / 2
                     amount_to_crop_right = amount_to_crop_left
                 else:
                     # Not sure which way the rounding goes
-                    amount_to_crop_left = amount_to_crop/2
+                    amount_to_crop_left = amount_to_crop / 2
                     amount_to_crop_right = amount_to_crop - amount_to_crop_left
-                box = (amount_to_crop_left, 0, res_x-amount_to_crop_right, RESOLUTION_Y)
+                box = (amount_to_crop_left, 0, res_x - amount_to_crop_right,
+                                                                RESOLUTION_Y)
                 image = image.crop(box)
     # Add a black background
     background = Image.new('RGB', (RESOLUTION_X, RESOLUTION_Y), (0, 0, 0))
@@ -226,12 +234,13 @@ def create_image_text(save_to, temp_image, text):
         text_margin = 0.025  # 10% left and 10% right
         (img_width, img_height) = background.size
         text_margin_pix = text_margin * img_width
-        img_width = int( img_width - 2 * text_margin_pix)
+        img_width = int(img_width - text_margin_pix * 2)
         draw = ImageDraw.Draw(background)
         lines, tmp, h = intelli_draw(draw, text, font, img_width)
         j = 0
         for i in lines:
-            draw.text((0 + text_margin_pix, 0 + j * h + text_margin_pix),  # where to draw (start @ (0,0))
+            # where to draw (start @ (0,0))
+            draw.text((0 + text_margin_pix, 0 + j * h + text_margin_pix),
                     i,  # actual line
                     font=font,  # font to use
                     fill=FONT_COLOR)  # text color
@@ -239,11 +248,12 @@ def create_image_text(save_to, temp_image, text):
     fhandle = open(save_to, 'w')
     background.save(fhandle, 'JPEG')
 
+
 def set_gnome_wallpaper(file_path):
     command = "gsettings set org.gnome.desktop.background picture-uri file://" + file_path
     status, output = commands.getstatusoutput(command)
     return status
-    
+
 
 if __name__ == '__main__':
     # create download directory
