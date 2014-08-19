@@ -255,6 +255,14 @@ def set_gnome_wallpaper(file_path):
     return status
 
 
+def set_xfce_wallpaper(file_path):
+    command = "xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitorHDMI2/workspace0/last-image --set " + file_path
+    status, output = commands.getstatusoutput(command)
+    return status
+
+
+
+
 if __name__ == '__main__':
     # create download directory
     if not os.path.exists(os.path.expanduser(DOWNLOAD)):
