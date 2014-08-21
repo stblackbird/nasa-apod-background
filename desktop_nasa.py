@@ -55,7 +55,7 @@ FONT_PATH = '/usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-B.ttf'
 FONT_SIZE = 15
 FONT_COLOR = (255, 255, 255)
 # Select True if you don't want any description
-GET_IMAGE_ONLY = True
+GET_IMAGE_ONLY = False
 # Future Option
 # Valid values are [top, bottom, left, right]
 # text_positioning = 'top'
