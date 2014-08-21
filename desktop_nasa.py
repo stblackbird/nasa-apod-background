@@ -43,9 +43,16 @@ from PIL import ImageFont
 import time
 
 # Configurable Settings
+# Desktop Environment
+# Valid values are [gnome, xfce]
+DE = 'xfce'
+# XFCE settings
+XFCE_command = 'xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitorHDMI2/workspace0/last-image --set'
+# This is default resolution, if dynamic method doesn't work
+RESOLUTION_X, RESOLUTION_Y = 1920, 1080
 # FONTS
 FONT_PATH = '/usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-B.ttf'
-FONT_SIZE = 20
+FONT_SIZE = 15
 FONT_COLOR = (255, 255, 255)
 # Select True if you don't want any description
 GET_IMAGE_ONLY = False
@@ -53,9 +60,7 @@ GET_IMAGE_ONLY = False
 # Valid values are [top, bottom, left, right]
 # text_positioning = 'top'
 NASA_POD_SITE = 'http://apod.nasa.gov/apod/'
-DOWNLOAD = os.getenv("HOME") + '/.backgrounds/'
-# This is default resolution, if dynamic method doesn't work
-RESOLUTION_X, RESOLUTION_Y = 1920, 1080
+DOWNLOAD = os.getenv("HOME") + '/.backgrounds/%rx%r/' % (RESOLUTION_X, RESOLUTION_Y)
 # globals
 font = ImageFont.truetype(FONT_PATH, FONT_SIZE)
 # Crop to fit screen instead of having black borders
@@ -255,6 +260,14 @@ def set_gnome_wallpaper(file_path):
     return status
 
 
+def set_xfce_wallpaper(file_path):
+    command = XFCE_command + " " + file_path
+    status, output = commands.getstatusoutput(command)
+    return status
+
+
+
+
 if __name__ == '__main__':
     # create download directory
     if not os.path.exists(os.path.expanduser(DOWNLOAD)):
@@ -265,13 +278,18 @@ if __name__ == '__main__':
         [RESOLUTION_X, RESOLUTION_Y] = screen_resolution
 
     site_contents = download_site(NASA_POD_SITE)
+    temp_filename, filename = get_image(site_contents)
+    create_image_text(DOWNLOAD + filename, temp_filename, '')
+
     if GET_IMAGE_ONLY == False:
         title = get_img_title(site_contents)
         title = title + ': '
         description = get_img_description(site_contents)
-    else:
-        title = ''
-        description = ''
-    temp_filename, filename = get_image(site_contents)
-    create_image_text(DOWNLOAD + filename, temp_filename, title + description)
-    status = set_gnome_wallpaper(DOWNLOAD + filename)
+        filename = filename[:-4] + '_[TXT].jpg'
+        create_image_text(DOWNLOAD + filename, temp_filename, title + description)
+
+
+    if DE == 'gnome':
+        status = set_gnome_wallpaper(DOWNLOAD + filename)
+    if DE == 'xfce':
+        status = set_xfce_wallpaper(DOWNLOAD + filename)
