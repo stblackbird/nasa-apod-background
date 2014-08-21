@@ -45,7 +45,7 @@ import time
 # Configurable Settings
 # Desktop Environment
 # Valid values are [gnome, xfce]
-DE = 'xfce'
+DE = 'gnome'
 # XFCE settings
 XFCE_command = 'xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitorHDMI2/workspace0/last-image --set'
 # This is default resolution, if dynamic method doesn't work
