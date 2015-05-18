@@ -138,7 +138,7 @@ def get_image(text):
     else:
         # Contains relative img path
         file_url = NASA_POD_SITE + reg.group(1)
-    filename = os.path.basename(file_url)
+    filename = time.strftime('%Y%m%d-') + os.path.basename(file_url)
     remote_file = urllib.urlopen(file_url)
     (temp_filename, instance) = urllib.urlretrieve(file_url)
     return temp_filename, filename
