@@ -17,6 +17,11 @@ System -> Preferences -> Startup Applications
 and add script like this:
 python /dir/to/script/desktop_nasa.py
 
+To set a cron job to run the script every hour, edit and use the script "set_nasa_apod.sh". You will need to put in the full path to the python script and also make it executeable by running:
+chmod 755 set_nasa_apod.sh
+Then in your crontab, insert the line (using crontab -e):
+0 * * * * /full/path/to/set_nasa_apod.sh
+
 I successfully use this script for a few years now, so it should work every day.
 
 CONTACT ME
