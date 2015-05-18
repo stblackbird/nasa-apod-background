@@ -24,6 +24,9 @@ Then in your crontab, insert the line (using crontab -e):
 
 I successfully use this script for a few years now, so it should work every day.
 
+UPDATE: nautilus scripts
+Now I added the 2 nautilus scripts from right mouse click menu I use from time to time. Edit them and set your location to the python script and the directory where the script stores images.
+
 CONTACT ME
 For any suggestions, improvements, bugs feel free to contact me at
 stmayridopoulos@hotmail.com
