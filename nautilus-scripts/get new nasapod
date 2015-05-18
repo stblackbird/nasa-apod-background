@@ -1,0 +1,3 @@
+#!/bin/bash
+# Run my python script to get new nasapod picture and set it
+python /home/stathis/desktop_nasa.py
