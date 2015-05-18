@@ -34,7 +34,5 @@ intelli_draw method from:
 http://mail.python.org/pipermail/image-sig/2004-December/003064.html
 
 
-If you liked this please donate
-BTC: 1EMZG6n9VvKjhX5gWGQeHt46GrLEwEHFcB
-or tip me
+If you liked this please tip me
 TiPS: EbdF2X9CrvQJvnTq7PGVKcT15YSp6gf6ij
